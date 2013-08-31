@@ -5,7 +5,7 @@
 	   | |  | '_ \ / _ \ | |  | | '_ \/ __|/ _ \/ _ \ '_ \ 
 	   | |  | | | |  __/ | |__| | | | \__ \  __/  __/ | | |
 	   |_|  |_| |_|\___|  \____/|_| |_|___/\___|\___|_| |_|                                                   
-	Round System 								 ServerSide                                                                                                
+	Round System 		 						 ServerSide                                                                                                
 ]]--
 
 util.AddNetworkString("THEUNSEEN_RoundChange")
@@ -18,7 +18,7 @@ function GetLivingPlayers(class)
 	local count = 0
 	
 	for k, v in ipairs(team.GetPlayers(class)) do
-		if (v:Alive()) then
+		if (v:Alive() and v:GetObserverMode() == OBS_MODE_NONE) then
 			count = count + 1
 		end
 	end
