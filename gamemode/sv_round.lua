@@ -30,11 +30,11 @@ local function UpdateRoundInfo(winner)
 	local state = GAMEMODE:GetRoundState()
 	
 	net.Start("THEUNSEEN_RoundChange")
-		net.WriteUInt(state, 3)
-		
-		if (winner and state == ROUND_STATE_END) then
-			net.WriteUInt(winner, 2)
-		end
+	net.WriteUInt(state, 3)
+	
+	if (winner and state == ROUND_STATE_END) then
+		net.WriteUInt(winner, 2)
+	end
 	net.Broadcast()
 end
 
@@ -80,12 +80,16 @@ end)
 
 hook.Add("RoundStart", "THEUNSEEN_Round_Start", function()
 	UpdateRoundInfo()
-	
 	GAMEMODE:SetRoundNumber(GAMEMODE:GetRoundNumber() + 1)
 end)
 
 hook.Add("RoundInProgress", "THEUNSEEN_Round_InProgress", function()
 	UpdateRoundInfo()
+	for k, v in pairs( player.GetAll() ) do
+		v:KillSilent()
+		v:UnSpectate()
+		v:Spawn()
+	end
 end)
 
 hook.Add("RoundEnd", "THEUNSEEN_Round_End", function()

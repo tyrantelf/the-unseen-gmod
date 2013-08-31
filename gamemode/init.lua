@@ -18,7 +18,6 @@ include("sh_round.lua")
 
 include("sv_round.lua")
 
-
 function GM:PlayerInitialSpawn( ply )
   print( ply:GetName().." joined the server.\n" )
 
@@ -32,7 +31,7 @@ function GM:PlayerSpawn(ply)
     ply:KillSilent()
     ply:Spectate( OBS_MODE_IN_EYE )
   end
-
+  ply:DrawShadow( false )
   ply:CrosshairDisable()
   ply:SetHealth(100)
   ply:SetRunSpeed(700)
@@ -40,6 +39,7 @@ function GM:PlayerSpawn(ply)
 
   if ply:Team() == TEAM_IRIS then
     ply:SetModel( "models/player/police.mdl" )
+    ply:SetBloodColor( BLOOD_COLOR_RED )
     ply:Give("weapon_cs_pumpshotgun")
     ply:Give("weapon_cs_deagle")
     ply:Give("weapon_cs_p90")
@@ -48,7 +48,8 @@ function GM:PlayerSpawn(ply)
     ply:Give("weapon_cs_aug")
   else
     ply:SetModel( "models/player/hidden/hidden.mdl" )
-    ply:Give("empty_weapon")
+    ply:SetBloodColor(-1)
+    ply:Give("weapon_hidden")
   end
 
 end
@@ -67,7 +68,7 @@ function ChooseUnseen()
       v:SetTeam( TEAM_IRIS )
     end
 
-    if NextUnseen:IsValid() and NextUnseen:IsPlayer() then
+    if NextUnseen and NextUnseen:IsValid() and NextUnseen:IsPlayer() then
       NextUnseen:SetTeam( TEAM_UNS )
     else
       table.Random( team.GetPlayers( TEAM_IRIS ) ):SetTeam( TEAM_UNS )
