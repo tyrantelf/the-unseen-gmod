@@ -1,1 +1,13 @@
 https://docs.google.com/document/d/1WQeP-TGPwlpxY_qIl6Jif0CrsUEIaWBpeqYOM3b6Cq8/pub
+
+HEADER FOR ALL FILES:
+
+--[[
+   _______ _            _    _                           
+  |__   __| |          | |  | |                          
+     | |  | |__   ___  | |  | |_ __  ___  ___  ___ _ __  
+     | |  | '_ \ / _ \ | |  | | '_ \/ __|/ _ \/ _ \ '_ \ 
+     | |  | | | |  __/ | |__| | | | \__ \  __/  __/ | | |
+     |_|  |_| |_|\___|  \____/|_| |_|___/\___|\___|_| |_|                                                   
+  System/File                        Shared/Client/Server                                                                                             
+]]--
