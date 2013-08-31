@@ -1,0 +1,12 @@
+"theunseen"
+{
+	"base"		"base"
+	"title"		"The Unseen"
+	"maps"		"^hdn_"
+	"menusystem"	"1"
+
+	"settings"
+	{
+		//put some settings here
+	}
+}
