@@ -7,12 +7,13 @@
      |_|  |_| |_|\___|  \____/|_| |_|___/\___|\___|_| |_|                                                   
   Main                                         ClientSide                                                                                                
 ]]--
+
 include("shared.lua")
-include("util.lua")
-include("cl_round.lua")
 include("sh_round.lua")
-include("mapvote/cl_mapvote.lua")
+include("cl_round.lua")
 include("sh_weapons.lua")
+include("util.lua")
+include("mapvote/cl_mapvote.lua")
 
 nextheartbeat = 0
 
@@ -33,7 +34,7 @@ function GM:HUDDrawTargetID()
 end
 
 function AuraView(ply, key)
-	if ( ply:KeyDown( KEY_C ) ) and ply:Team() == TEAM_UNS then
+	if ( LocalPlayer():KeyDown( KEY_C ) ) and LocalPlayer():Team() == TEAM_UNS then
 		if CurTime() > nextheartbeat then
 			nextheartbeat = CurTime() + 1
 			for k,v in pairs( ents.GetAll() ) do
@@ -60,4 +61,4 @@ function AuraView(ply, key)
 	end
 end
 
-hook.Add( "KeyPress", "AuraViewKeypress", AuraView )
+hook.Add( "Thnk", "AuraViewThink", AuraView )
