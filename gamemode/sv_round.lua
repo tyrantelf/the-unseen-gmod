@@ -14,24 +14,12 @@ function GM:SetRoundNumber(num)
 	SetGlobalInt("THEUNSEEN_RoundNumber", num)
 end
 
-function GetLivingPlayers(class)
-	local count = 0
-	
-	for k, v in ipairs(team.GetPlayers(class)) do
-		if (v:Alive() and v:GetObserverMode() == OBS_MODE_NONE) then
-			count = count + 1
-		end
-	end
-	
-	return count
-end
-
 local function UpdateRoundInfo(winner)
 	local state = GAMEMODE:GetRoundState()
 	
 	net.Start("THEUNSEEN_RoundChange")
 	net.WriteUInt(state, 3)
-	
+
 	if (winner and state == ROUND_STATE_END) then
 		net.WriteUInt(winner, 2)
 	end
@@ -54,8 +42,8 @@ hook.Add("Tick", "THEUNSEEN_Round_Tick", function()
 			GAMEMODE:SetRoundState(ROUND_STATE_INPROGRESS)
 		end
 	elseif (state == ROUND_STATE_INPROGRESS) then
-		local IrisAlive = GetLivingPlayers(TEAM_IRIS)
-		local UnseenAlive = GetLivingPlayers(TEAM_UNS)
+		local IrisAlive = util.GetLivingPlayers(TEAM_IRIS)
+		local UnseenAlive = util.GetLivingPlayers(TEAM_UNS)
 		
 		if (IrisAlive < 1) then
 			GAMEMODE.WinningTeam = TEAM_UNS
@@ -98,4 +86,5 @@ end)
 
 hook.Add("RoundEndGame", "THEUNSEEN_Round_EndGame", function()
 	UpdateRoundInfo()
+	MapVote.Start(nil, nil, nil, nil)
 end)

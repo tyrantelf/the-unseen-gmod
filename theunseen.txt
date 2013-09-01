@@ -2,7 +2,7 @@
 {
 	"base"		"base"
 	"title"		"The Unseen"
-	"maps"		"^hdn_"
+	"maps"		"^uns_"
 	"menusystem"	"1"
 
 	"settings"

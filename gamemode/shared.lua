@@ -18,5 +18,13 @@ TEAM_IRIS = 2
 team.SetUp(TEAM_UNS, "The Unseen", Color(255, 0, 0, 255))
 team.SetUp(TEAM_IRIS, "I.R.I.S", Color(0, 0, 255, 255))
 
-team.SetSpawnPoint( TEAM_UNS, {"info_hidden_spawn"} )
-team.SetSpawnPoint( TEAM_IRIS, {"info_marine_spawn"} )
+irisModels = {
+Model("models/player/urban.mdl"),
+Model("models/player/gasmask.mdl"),
+Model("models/player/riot.mdl"),
+Model("models/player/swat.mdl")
+}
+
+function GetRandomPlayerModel()
+	return table.Random(irisModels)
+end
