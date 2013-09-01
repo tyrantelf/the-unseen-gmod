@@ -39,7 +39,6 @@ function GM:PlayerSpawn(ply)
 
   if ply:Team() == TEAM_IRIS then
     ply:SetModel( "models/player/police.mdl" )
-    ply:SetBloodColor( BLOOD_COLOR_RED )
     ply:Give("weapon_cs_pumpshotgun")
     ply:Give("weapon_cs_deagle")
     ply:Give("weapon_cs_p90")
@@ -48,7 +47,6 @@ function GM:PlayerSpawn(ply)
     ply:Give("weapon_cs_aug")
   else
     ply:SetModel( "models/player/hidden/hidden.mdl" )
-    ply:SetBloodColor(-1)
     ply:Give("weapon_hidden")
   end
 
@@ -61,6 +59,12 @@ function GM:PlayerDeath( ply, wep, attacker )
     NextUnseen = attacker
   end
 end
+
+hook.Add("PlayerHurt", "THEUNSEEN_Stop_Decal", function( ply )
+  if ply:Team() == TEAM_UNS then
+    ply:ClearAllDecals( )
+  end
+end)
 
 function ChooseUnseen()
   if not (GAMEMODE.WinningTeam == TEAM_UNS and #team.GetPlayers( TEAM_UNS ) == 1) then
