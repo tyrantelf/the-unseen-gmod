@@ -12,35 +12,35 @@ if (SERVER) then
 	CreateConVar("hidden_invisible", "1", {FCVAR_ARCHIVE,FCVAR_NOTIFY})
 end
 if( CLIENT ) then 
-	SWEP.BounceWeaponIcon 			= false
-	SWEP.DrawAmmo 					= false
-	SWEP.WepSelectIcon 				= surface.GetTextureID("weapons/weapon_hidden")
+	SWEP.BounceWeaponIcon = false
+	SWEP.DrawAmmo = false
+	SWEP.WepSelectIcon = surface.GetTextureID("weapons/weapon_hidden")
 
 	killicon.Add("weapon_hidden","weapons/weapon_hidden",Color(255,255,255))
 	killicon.Add("hidden_pipebomb","weapons/hidden_pipebomb",Color(255,255,255))
 
 end  
-	SWEP.PrintName 					= "Kabar Combat Knife"
-	SWEP.Author 					= "Baddog (Fixed by Nyaaaa)"
-	SWEP.Instructions 				= "Left click to slash.\nUse+Left click to switch to pipebombs.\nRight click to pigstick.\nReload to taunt."
-	SWEP.ViewModelFOV 				= 90
-	SWEP.ViewModelFlip 				= false
-	SWEP.CSMuzzleFlashes 			= false
-	SWEP.Slot 						= 2
-	SWEP.SlotPos 					= 1
-	SWEP.Category 					= "Hidden Source Weapons"
-	SWEP.Spawnable 					= true
-	SWEP.AdminSpawnable 			= true
-	SWEP.ViewModel 					= "models/weapons/kabar/v_kabar.mdl"
-	SWEP.WorldModel 				= "models/weapons/kabar/w_kabar.mdl"
-	SWEP.Primary.ClipSize 			= 3
-	SWEP.Primary.DefaultClip 		= 3
-	SWEP.Primary.Automatic 			= false
-	SWEP.Primary.Ammo 				= "none"
-	SWEP.Secondary.ClipSize 		= 1
-	SWEP.Secondary.DefaultClip 		= 1
-	SWEP.Secondary.Automatic 		= false
-	SWEP.Secondary.Ammo 			= "none" 
+SWEP.PrintName = "Kabar Combat Knife"
+SWEP.Author = "Baddog (Fixed by Nyaaaa)"
+SWEP.Instructions = "Left click to slash.\nUse+Left click to switch to pipebombs.\nRight click to pigstick.\nReload to taunt."
+SWEP.ViewModelFOV = 90
+SWEP.ViewModelFlip = false
+SWEP.CSMuzzleFlashes = false
+SWEP.Slot = 2
+SWEP.SlotPos = 1
+SWEP.Category = "Hidden Source Weapons"
+SWEP.Spawnable = true
+SWEP.AdminSpawnable = true
+SWEP.ViewModel = "models/weapons/kabar/v_kabar.mdl"
+SWEP.WorldModel = "models/weapons/kabar/w_kabar.mdl"
+SWEP.Primary.ClipSize = 3
+SWEP.Primary.DefaultClip = 3
+SWEP.Primary.Automatic = false
+SWEP.Primary.Ammo = "none"
+SWEP.Secondary.ClipSize = 1
+SWEP.Secondary.DefaultClip = 1
+SWEP.Secondary.Automatic = false
+SWEP.Secondary.Ammo = "none" 
 
 
 function SWEP:Initialize()
@@ -124,7 +124,7 @@ function SWEP:PrimaryAttack()
 				self:SendWeaponAnim(ACT_VM_DRAW)
 			else
 				self.Weapon:SetNWBool( "Knife", true )
-				self.Owner:GetViewModel():SetModel("models/weapons/v_knife_t.mdl")
+				self.Owner:GetViewModel():SetModel("models/weapons/kabar/v_kabar.mdl")
 				self:SendWeaponAnim(ACT_VM_DRAW)
 				self.Weapon:EmitSound("Weapon_Knife.Deploy")
 			end
@@ -279,7 +279,7 @@ function SWEP:Throw()
 			phys:AddAngleVelocity(Vector(math.random(-500,500),math.random(-500,500),math.random(-500,500)))
 		end
 		self.Weapon:SetNWBool( "Knife", true )
-		self.Owner:GetViewModel():SetModel("models/weapons/v_knife_t.mdl")
+		self.Owner:GetViewModel():SetModel("models/weapons/kabar/v_kabar.mdl")
 		self:SendWeaponAnim(ACT_VM_DRAW)
 		self.Weapon:EmitSound("Weapon_Knife.Deploy")
 		timer.Create( "Pipebomb", 60, self.Primary.ClipSize - self.Weapon:Clip1(), function() self:GivePipebomb() end )
@@ -328,9 +328,9 @@ function SWEP:Think()
 	if GetConVarString("hidden_invisible") == "1" then
 		self.Owner:GetActiveWeapon().WorldModel = ""
 	elseif GetConVarString("hidden_invisible") == "0" then
-		self.Owner:GetActiveWeapon().WorldModel = "models/weapons/w_knife_t.mdl"
+		self.Owner:GetActiveWeapon().WorldModel = "models/weapons/kabar/w_kabar.mdl"
 	end
-	
+
 	if SERVER then
 		if self.Weapon:GetNetworkedBool("Pigstick") then return false end
 		if(self.Owner:Alive())then
@@ -493,21 +493,20 @@ function SWEP:Reload()
 	return true end  
 
 function SWEP:Holster() if self.Weapon:GetNetworkedBool("Wall") or self.Weapon:GetNetworkedBool("Pigstick") or self.Weapon:GetNetworkedBool("Holding") then return false end
-	if SERVER then
-		self.Owner:DrawWorldModel( true )
-		self.Owner:SetColor( Color(255, 255, 255, 255) )
-		self.Owner:SetMaterial( "" )
-		self.Owner.ShouldReduceFallDamage = false
-		self.Owner:SetNoTarget(false)
-		return true
-	end end  
+if SERVER then
+	self.Owner:DrawWorldModel( true )
+	self.Owner:SetColor( Color(255, 255, 255, 255) )
+	self.Owner:SetMaterial( "" )
+	self.Owner.ShouldReduceFallDamage = false
+	self.Owner:SetNoTarget(false)
+	return true
+end end  
 
 function SWEP:Deploy()
 	if CurTime() > taunttime then
 		taunttime = CurTime() + 5
 		self:EmitSound( Taunt[math.random(1,#Taunt)] )
 	end
-	self.Owner:SetModel( "models/player/hidden/hidden.mdl" )
 	if SERVER then
 		if GetConVarString("hidden_invisible") == "1" then
 			self.Owner:SetColor( Color(255, 255, 255, 3) )
@@ -528,8 +527,11 @@ function SWEP:Deploy()
 		end
 		self.ShootafterTakeout = CurTime() + 1.0
 		return true
-	end end  function Die(ply)
-	if(ply.GrabbedEnt)then
+	end
+end
+
+function Die(ply)
+	if( ply.GrabbedEnt and ply.GrabbedEnt:IsValid() )then
 		ply.GrabbedEnt:SetCollisionGroup( COLLISION_GROUP_NONE )
 		ply.GrabbedPhys:EnableCollisions( true )
 		ply.GrabbedPhys:EnableGravity(true)
@@ -556,15 +558,15 @@ function SWEP:Deploy()
 	if ply:GetActiveWeapon():GetClass() == "weapon_hidden" then return true end end  function OverrideDeathSound(ply)
 	if not ply:GetActiveWeapon():IsValid() then return false end
 	if ply:GetActiveWeapon():GetClass() == "weapon_hidden" then return true end end  if CLIENT then
-	
+
 
 function SWEP:DrawHUD()
-		for i = 1,self.Weapon:Clip1() do 
-			surface.SetDrawColor( 255, 255, 255, 255 )
-			surface.SetTexture(surface.GetTextureID( "weapons/hidden_pipebomb" ))  
-			surface.DrawTexturedRect( ScrW()-75-i*50, ScrH()-75, 50, 50 )
-		end
-	end end
+	for i = 1,self.Weapon:Clip1() do 
+		surface.SetDrawColor( 255, 255, 255, 255 )
+		surface.SetTexture(surface.GetTextureID( "weapons/hidden_pipebomb" ))  
+		surface.DrawTexturedRect( ScrW()-75-i*50, ScrH()-75, 50, 50 )
+	end
+end end
 
 if SERVER then
 	hook.Add("Think","Tinkerer", function()

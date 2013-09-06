@@ -32,6 +32,7 @@ include("util.lua")
 
 --Map Voting System
 AddCSLuaFile("mapvote/cl_mapvote.lua")
+AddCSLuaFile("mapvote/config.lua")
 include("mapvote/config.lua")
 include("mapvote/sv_mapvote.lua")
 include("mapvote/rtv.lua")
@@ -90,8 +91,9 @@ function GM:PlayerSelectSpawn(pl)
     cSpawnList = self.unsSpawns
   end
   
-  numSpwn = #cSpawnList
-  if numSpwn == 0 then
+  if cSpawnList then
+    numSpwn = #cSpawnList
+  else
     Msg("PlayerSelectSpawn error: no spawn available\n")
     return nil
   end
@@ -113,12 +115,23 @@ function GM:PlayerDeath( ply, wep, attacker )
   ply:StripWeapons()
   ply:Spectate( OBS_MODE_IN_EYE )
   if ply:Team() == TEAM_UNS then
-    NextUnseen = attacker
+    if attacker:IsValid() then
+      NextUnseen = attacker
+    else
+      NextUnseen = nil
+    end
   end
-  if ply:Team() == attacker:Team() then
-    local curteamkills = attacker.teamkills or 0
-    attacker.teamkills = curteamkills + 1
+  if ply:IsValid() and attacker:IsValid() then
+    if ply:Team() == attacker:Team() then
+      local curteamkills = attacker.teamkills or 0
+      attacker.teamkills = curteamkills + 1
+    end
   end
+end
+
+
+function GM:PlayerDeathThink( ply )
+  return false
 end
 
 
@@ -127,7 +140,6 @@ hook.Add("PlayerHurt", "THEUNSEEN_Stop_Decal", function( ply )
     ply:RemoveAllDecals()
   end
 end)
-
 
 function ChooseUnseen()
   if not (GAMEMODE.WinningTeam == TEAM_UNS and #team.GetPlayers( TEAM_UNS ) == 1) then
@@ -146,7 +158,7 @@ end
 
 function KickTeamKillers()
   for k, v in pairs( player.GetAll() ) do
-    if v.teamkills and v:teamkills:IsValid() and v.teamkills > 2 then
+    if v.teamkills and v.teamkills > 2 then
       v:Kick( "Kicked for TeamKilling" )
     end
   end

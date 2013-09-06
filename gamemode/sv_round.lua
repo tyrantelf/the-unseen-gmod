@@ -22,6 +22,11 @@ local function UpdateRoundInfo(winner)
 
 	if (winner and state == ROUND_STATE_END) then
 		net.WriteUInt(winner, 2)
+		if winner == 0 then
+			PrintMessage( HUD_PRINTCENTER, "The hidden took too long! Tie!")
+		elseif winner > 0 then
+			PrintMessage( HUD_PRINTCENTER, team.GetName(winner) .. " Wins!")
+		end
 	end
 	net.Broadcast()
 end
